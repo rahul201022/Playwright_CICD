@@ -22,7 +22,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot:"on",
     video:"retain-on-failure",
-    headless: false,
+    headless: true,
     permissions: ['clipboard-read', 'clipboard-write']
   },
 

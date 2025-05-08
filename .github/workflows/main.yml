@@ -25,14 +25,3 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-
-
-    - name: Run Playwright tests and generate HTML report
-      run: |
-          npx playwright test
-          npx playwright show-report --output=playwright-report
-    - name: Upload Playwright HTML report
-      uses: actions/upload-artifact@v4
-      with:
-          name: playwright-html-report
-          path: playwright-report/
