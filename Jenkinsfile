@@ -25,18 +25,24 @@ pipeline {
         stage('Setup Docker') {
             steps {
                 script {
-                    // Check if Docker is available
+                    // Check if Docker is available and running
                     sh '''
-                        if ! command -v docker &> /dev/null; then
-                            echo "Docker not found, installing..."
-                            curl -fsSL https://get.docker.com -o get-docker.sh
-                            sh get-docker.sh
-                            sudo usermod -aG docker jenkins
+                        if command -v docker &> /dev/null; then
+                            echo "Docker found, checking if it's running..."
+                            if docker info &> /dev/null; then
+                                echo "Docker is running"
+                                docker --version
+                                echo "Docker context: $(docker context ls | grep '*' | awk '{print $1}')"
+                            else
+                                echo "Docker is not running. Please start Colima with: colima start"
+                                exit 1
+                            fi
+                        else
+                            echo "Docker not found. Please install Docker CLI and Colima:"
+                            echo "brew install docker colima"
+                            echo "colima start"
+                            exit 1
                         fi
-                        
-                        # Test Docker access
-                        docker --version
-                        docker info
                     '''
                 }
             }
