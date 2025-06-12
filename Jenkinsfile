@@ -4,6 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'playwright-tests'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
+        PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${env.PATH}"
+        DOCKER_HOST = "unix:///var/run/docker.sock"
     }
     
     stages {
@@ -27,18 +29,22 @@ pipeline {
                 script {
                     // Check if Docker is available and running
                     sh '''
-                        if command -v docker &> /dev/null; then
-                            echo "Docker found, checking if it's running..."
-                            if docker info &> /dev/null; then
+                        export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+                        
+                        if [ -f "/opt/homebrew/bin/docker" ]; then
+                            echo "Docker found at /opt/homebrew/bin/docker"
+                            /opt/homebrew/bin/docker --version
+                            
+                            if /opt/homebrew/bin/docker info &> /dev/null; then
                                 echo "Docker is running"
-                                docker --version
-                                echo "Docker context: $(docker context ls | grep '*' | awk '{print $1}')"
+                                /opt/homebrew/bin/docker context ls
                             else
                                 echo "Docker is not running. Please start Colima with: colima start"
                                 exit 1
                             fi
                         else
-                            echo "Docker not found. Please install Docker CLI and Colima:"
+                            echo "Docker not found at /opt/homebrew/bin/docker"
+                            echo "Please install Docker CLI and Colima:"
                             echo "brew install docker colima"
                             echo "colima start"
                             exit 1
@@ -51,7 +57,11 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .'
+                    sh 'docker context use colima'
+                    sh '''
+                        export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+                        /opt/homebrew/bin/docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
+                    '''
                 }
             }
         }
@@ -60,7 +70,10 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'docker run --rm ${DOCKER_IMAGE}:${DOCKER_TAG} npx playwright test --reporter=html'
+                        sh '''
+                            export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+                            /opt/homebrew/bin/docker run --rm ${DOCKER_IMAGE}:${DOCKER_TAG} npx playwright test --reporter=html
+                        '''
                     } catch (Exception e) {
                         echo "Tests failed: ${e.getMessage()}"
                         currentBuild.result = 'UNSTABLE'
@@ -72,9 +85,10 @@ pipeline {
                     script {
                         // Copy test results from container
                         sh '''
-                            docker create --name temp-container ${DOCKER_IMAGE}:${DOCKER_TAG}
-                            docker cp temp-container:/app/playwright-report ./playwright-report || true
-                            docker rm temp-container
+                            export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+                            /opt/homebrew/bin/docker create --name temp-container ${DOCKER_IMAGE}:${DOCKER_TAG}
+                            /opt/homebrew/bin/docker cp temp-container:/app/playwright-report ./playwright-report || true
+                            /opt/homebrew/bin/docker rm temp-container
                         '''
                     }
                 }
@@ -100,8 +114,18 @@ pipeline {
         stage('Cleanup') {
             steps {
                 script {
-                    sh 'docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG} || true'
+                    sh '''
+                        export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+                        /opt/homebrew/bin/docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG} || true
+                    '''
                 }
+            }
+        }
+        
+        stage('Test Docker') {
+            steps {
+                sh 'docker context use colima'
+                sh 'docker info'
             }
         }
     }
