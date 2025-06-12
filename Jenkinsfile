@@ -9,7 +9,16 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                checkout([$class: 'GitSCM', 
+                    branches: [[name: '*/main']], // or '*/master' depending on your default branch
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[
+                        credentialsId: '', // Add your credentials ID if needed
+                        url: 'https://github.com/rahul201022/Playwright_CICD.git' // Replace with your actual repository URL
+                    ]]
+                ])
             }
         }
         
