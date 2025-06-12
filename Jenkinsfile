@@ -5,7 +5,7 @@ pipeline {
         DOCKER_IMAGE = 'playwright-tests'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
         PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${env.PATH}"
-        DOCKER_HOST = "unix:///var/run/docker.sock"
+        DOCKER_HOST = "unix:///Users/rahulm/.colima/default/docker.sock"
     }
     
     stages {
@@ -29,6 +29,8 @@ pipeline {
                 script {
                     // Check if Docker is available and running
                     sh '''
+                        pwd
+                        ls -l                     
                         export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
                         
                         if [ -f "/opt/homebrew/bin/docker" ]; then
