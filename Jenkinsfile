@@ -22,6 +22,26 @@ pipeline {
             }
         }
         
+        stage('Setup Docker') {
+            steps {
+                script {
+                    // Check if Docker is available
+                    sh '''
+                        if ! command -v docker &> /dev/null; then
+                            echo "Docker not found, installing..."
+                            curl -fsSL https://get.docker.com -o get-docker.sh
+                            sh get-docker.sh
+                            sudo usermod -aG docker jenkins
+                        fi
+                        
+                        # Test Docker access
+                        docker --version
+                        docker info
+                    '''
+                }
+            }
+        }
+        
         stage('Build Docker Image') {
             steps {
                 script {

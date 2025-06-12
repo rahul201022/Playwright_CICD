@@ -29,6 +29,9 @@ services:
       - .:/var/jenkins_home/workspace/playwright-tests  # Mount your project
     environment:
       - JENKINS_OPTS=--httpPort=8080
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    group_add:
+      - "$(getent group docker | cut -d: -f3)"  # Add Jenkins to docker group
     depends_on:
       - playwright
 
