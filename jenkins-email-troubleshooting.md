@@ -12,8 +12,8 @@
    - **Default user e-mail suffix**: `@gmail.com`
    - **SMTP Port**: `587`
    - **Use SMTP Authentication**: ✅ Checked
-   - **User Name**: Your Gmail address
-   - **Password**: Your Gmail App Password (not regular password)
+   - **User Name**: rahulm@york.ie
+   - **Password**: lpya jgge imro csmf
    - **Use SSL**: ❌ Unchecked
    - **Use TLS**: ✅ Checked
 
