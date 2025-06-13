@@ -5,7 +5,7 @@ pipeline {
         DOCKER_IMAGE = 'playwright-tests'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
         PATH = "/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:${env.PATH}"
-        DOCKER_HOST = "unix:///Users/rahulm/.colima/default/docker.sock"
+        DOCKER_HOST = "unix:///var/run/docker.sock"
     }
     
     stages {
@@ -24,13 +24,21 @@ pipeline {
             }
         }
         
+        // Uncomment the next stage to test email notifications
+        // stage('Test Email Failure') {
+        //     steps {
+        //         script {
+        //             echo "This stage is intentionally failing to test email notifications"
+        //             error "Forced failure to test email notification system"
+        //         }
+        //     }
+        // }
+        
         stage('Setup Docker') {
             steps {
                 script {
                     // Check if Docker is available and running
                     sh '''
-                        pwd
-                        ls -l                     
                         export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
                         
                         if [ -f "/opt/homebrew/bin/docker" ]; then
@@ -59,7 +67,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker context use colima'
                     sh '''
                         export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
                         /opt/homebrew/bin/docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
@@ -71,15 +78,10 @@ pipeline {
         stage('Run Playwright Tests') {
             steps {
                 script {
-                    try {
-                        sh '''
-                            export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
-                            /opt/homebrew/bin/docker run --rm ${DOCKER_IMAGE}:${DOCKER_TAG} npx playwright test --reporter=html
-                        '''
-                    } catch (Exception e) {
-                        echo "Tests failed: ${e.getMessage()}"
-                        currentBuild.result = 'UNSTABLE'
-                    }
+                    sh '''
+                        export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+                        /opt/homebrew/bin/docker run --rm ${DOCKER_IMAGE}:${DOCKER_TAG} npx playwright test --reporter=html
+                    '''
                 }
             }
             post {
@@ -92,6 +94,17 @@ pipeline {
                             /opt/homebrew/bin/docker cp temp-container:/app/playwright-report ./playwright-report || true
                             /opt/homebrew/bin/docker rm temp-container
                         '''
+                    }
+                }
+                failure {
+                    script {
+                        echo "Tests failed - setting build status to FAILURE"
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+                success {
+                    script {
+                        echo "Tests passed successfully"
                     }
                 }
             }
@@ -123,27 +136,74 @@ pipeline {
                 }
             }
         }
-        
-        stage('Test Docker') {
-            steps {
-                sh 'docker context use colima'
-                sh 'docker info'
-            }
-        }
     }
     
     post {
         always {
             cleanWs()
+            script {
+                echo "Build completed with status: ${currentBuild.result}"
+                echo "Build URL: ${env.BUILD_URL}"
+                echo "Job Name: ${env.JOB_NAME}"
+                echo "Build Number: ${env.BUILD_NUMBER}"
+            }
         }
         success {
             echo 'Pipeline completed successfully!'
+            emailext (
+                subject: "✅ Build Success: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}",
+                body: """
+                <h2>Build Success!</h2>
+                <p><strong>Project:</strong> ${env.JOB_NAME}</p>
+                <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                <p><strong>Build URL:</strong> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                <p><strong>Build Log:</strong> <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></p>
+                <p><strong>Test Report:</strong> <a href="${env.BUILD_URL}HTML_Report/">HTML Test Report</a></p>
+                <p><strong>Status:</strong> ✅ SUCCESS</p>
+                """,
+                to: 'rahul201022@gmail.com',
+                mimeType: 'text/html'
+            )
         }
         failure {
             echo 'Pipeline failed!'
+            script {
+                echo "Sending failure email notification..."
+            }
+            emailext (
+                subject: "❌ Build Failed: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}",
+                body: """
+                <h2>Build Failed!</h2>
+                <p><strong>Project:</strong> ${env.JOB_NAME}</p>
+                <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                <p><strong>Build URL:</strong> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                <p><strong>Build Log:</strong> <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></p>
+                <p><strong>Status:</strong> ❌ FAILURE</p>
+                <p><strong>Please check the build log for details.</strong></p>
+                """,
+                to: 'rahul201022@gmail.com',
+                mimeType: 'text/html'
+            )
         }
         unstable {
             echo 'Pipeline completed with unstable results!'
+            script {
+                echo "Sending unstable email notification..."
+            }
+            emailext (
+                subject: "⚠️ Build Unstable: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}",
+                body: """
+                <h2>Build Unstable!</h2>
+                <p><strong>Project:</strong> ${env.JOB_NAME}</p>
+                <p><strong>Build Number:</strong> ${env.BUILD_NUMBER}</p>
+                <p><strong>Build URL:</strong> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                <p><strong>Build Log:</strong> <a href="${env.BUILD_URL}console">${env.BUILD_URL}console</a></p>
+                <p><strong>Status:</strong> ⚠️ UNSTABLE</p>
+                <p><strong>Some tests may have failed. Please check the build log.</strong></p>
+                """,
+                to: 'rahul201022@gmail.com',
+                mimeType: 'text/html'
+            )
         }
     }
 } 

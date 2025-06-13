@@ -1,0 +1,75 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<org.jenkinsci.plugins.emailext.ExtendedEmailPublisher_-DescriptorImpl plugin="email-ext@2.96">
+  <smtpServer>smtp.gmail.com</smtpServer>
+  <defaultSuffix>@gmail.com</defaultSuffix>
+  <smtpPort>587</smtpPort>
+  <useSMTPAuth>true</useSMTPAuth>
+  <smtpUsername>your-email@gmail.com</smtpUsername>
+  <smtpPassword>your-app-password</smtpPassword>
+  <useSsl>false</useSsl>
+  <useTls>true</useTls>
+  <charset>UTF-8</charset>
+  <defaultContentType>text/html</defaultContentType>
+  <defaultSubject>$DEFAULT_SUBJECT</defaultSubject>
+  <defaultBody>$DEFAULT_CONTENT</defaultBody>
+  <defaultReplyTo>$DEFAULT_REPLYTO</defaultReplyTo>
+  <emergencyReroute/>
+  <from/>
+  <maxAttachmentSize>0</maxAttachmentSize>
+  <defaultPresendScript/>
+  <defaultPostsendScript/>
+  <adminRequiredForTemplateTesting>false</adminRequiredForTemplateTesting>
+  <watchPluginTemplates>false</watchPluginTemplates>
+  <securitySettings>
+    <injectDefaults>true</injectDefaults>
+    <sendToDevelopers>true</sendToDevelopers>
+    <sendToRequester>true</sendToRequester>
+    <sendToCulprits>true</sendToCulprits>
+    <sendToListRecipients>true</sendToListRecipients>
+    <sendToDevRecipients>true</sendToDevRecipients>
+    <sendToRequesterRecipients>true</sendToRequesterRecipients>
+    <sendToCulpritRecipients>true</sendToCulpritRecipients>
+    <sendToRegressorRecipients>true</sendToRegressorRecipients>
+    <includeCulprits>true</includeCulprits>
+    <sendToRecipientList>true</sendToRecipientList>
+  </securitySettings>
+  <allowedDomains class="list"/>
+  <excludedCommitters/>
+  <defaultRecipients>rahul201022@gmail.com</defaultRecipients>
+  <enableAuditLog>false</enableAuditLog>
+  <maxAttachmentSizeMb>0</maxAttachmentSizeMb>
+  <defaultContent>Type: $BUILD_STATUS
+Build URL: $BUILD_URL
+Project: $PROJECT_NAME
+Build Number: $BUILD_NUMBER
+Build Log: $BUILD_URLconsole
+Changes: $CHANGES
+Failed Tests: $FAILED_TESTS</defaultContent>
+  <defaultSubject>Build Status: $PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS</defaultSubject>
+  <defaultReplyTo>$DEFAULT_REPLYTO</defaultReplyTo>
+  <emergencyReroute/>
+  <from/>
+  <maxAttachmentSize>0</maxAttachmentSize>
+  <defaultPresendScript/>
+  <defaultPostsendScript/>
+  <adminRequiredForTemplateTesting>false</adminRequiredForTemplateTesting>
+  <watchPluginTemplates>false</watchPluginTemplates>
+  <securitySettings>
+    <injectDefaults>true</injectDefaults>
+    <sendToDevelopers>true</sendToDevelopers>
+    <sendToRequester>true</sendToRequester>
+    <sendToCulprits>true</sendToCulprits>
+    <sendToListRecipients>true</sendToListRecipients>
+    <sendToDevRecipients>true</sendToDevRecipients>
+    <sendToRequesterRecipients>true</sendToRequesterRecipients>
+    <sendToCulpritRecipients>true</sendToCulpritRecipients>
+    <sendToRegressorRecipients>true</sendToRegressorRecipients>
+    <includeCulprits>true</includeCulprits>
+    <sendToRecipientList>true</sendToRecipientList>
+  </securitySettings>
+  <allowedDomains class="list"/>
+  <excludedCommitters/>
+  <defaultRecipients>rahul201022@gmail.com</defaultRecipients>
+  <enableAuditLog>false</enableAuditLog>
+  <maxAttachmentSizeMb>0</maxAttachmentSizeMb>
+</org.jenkinsci.plugins.emailext.ExtendedEmailPublisher_-DescriptorImpl> 
