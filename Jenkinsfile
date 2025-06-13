@@ -49,8 +49,30 @@ pipeline {
                                 echo "Docker is running"
                                 /opt/homebrew/bin/docker context ls
                             else
-                                echo "Docker is not running. Please start Colima with: colima start"
-                                exit 1
+                                echo "Docker is not running. Attempting to start Colima..."
+                                
+                                # Check if colima is available
+                                if command -v colima &> /dev/null; then
+                                    echo "Starting Colima..."
+                                    colima start
+                                    
+                                    # Wait a moment for Docker to be ready
+                                    sleep 5
+                                    
+                                    # Check if Docker is now running
+                                    if /opt/homebrew/bin/docker info &> /dev/null; then
+                                        echo "Docker is now running after starting Colima"
+                                        /opt/homebrew/bin/docker context ls
+                                    else
+                                        echo "Failed to start Docker with Colima"
+                                        echo "Please manually start Colima with: colima start"
+                                        exit 1
+                                    fi
+                                else
+                                    echo "Colima not found. Please install it with: brew install colima"
+                                    echo "Then start it with: colima start"
+                                    exit 1
+                                fi
                             fi
                         else
                             echo "Docker not found at /opt/homebrew/bin/docker"

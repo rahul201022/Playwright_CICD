@@ -1,4 +1,145 @@
-# Jenkins Email Notification Setup Guide
+# Jenkins Email Setup Guide
+
+## Current Issue: Email Connection Error
+
+The error "Connection error sending email, retrying once more in 10 seconds..." indicates that Jenkins cannot connect to the SMTP server. This is because the email configuration still has placeholder values.
+
+## Step-by-Step Email Configuration
+
+### 1. Access Jenkins Email Configuration
+
+1. Go to **Manage Jenkins** > **Configure System**
+2. Scroll down to find **Extended E-mail Notification** section
+3. If you don't see this section, install the **Email Extension Plugin** first
+
+### 2. Configure SMTP Settings
+
+#### Option A: Using Gmail SMTP (Recommended)
+```
+SMTP server: smtp.gmail.com
+Default user e-mail suffix: @gmail.com
+SMTP Port: 587
+Use SMTP Authentication: ✅ Checked
+User Name: your-gmail@gmail.com
+Password: your-gmail-app-password
+Use SSL: ❌ Unchecked
+Use TLS: ✅ Checked
+```
+
+#### Option B: Using York.ie SMTP (if available)
+```
+SMTP server: smtp.york.ie (or your organization's SMTP server)
+Default user e-mail suffix: @york.ie
+SMTP Port: 587 (or 465 for SSL)
+Use SMTP Authentication: ✅ Checked
+User Name: rahulm@york.ie
+Password: your-york-password
+Use SSL: ❌ Unchecked (or ✅ if using port 465)
+Use TLS: ✅ Checked
+```
+
+### 3. Gmail App Password Setup
+
+If using Gmail SMTP:
+
+1. Go to your Google Account settings: https://myaccount.google.com/
+2. Navigate to **Security**
+3. Enable **2-Step Verification** if not already enabled
+4. Go to **App passwords**
+5. Select "Mail" as the app and "Other" as the device
+6. Generate the app password
+7. Use this password in Jenkins (NOT your regular Gmail password)
+
+### 4. Test Email Configuration
+
+1. In the same email configuration page, click **Test configuration by sending test e-mail**
+2. Enter your email address: `rahulm@york.ie`
+3. Click **Test configuration**
+4. Check if you receive the test email
+
+### 5. Alternative Email Configuration
+
+If you continue to have issues, try these alternative settings:
+
+#### Option 1: Gmail with SSL
+```
+SMTP server: smtp.gmail.com
+SMTP Port: 465
+Use SSL: ✅ Checked
+Use TLS: ❌ Unchecked
+```
+
+#### Option 2: Basic Email Plugin
+If the Extended Email Plugin continues to fail, try using the basic email plugin:
+
+```groovy
+post {
+    failure {
+        mail to: 'rahulm@york.ie',
+             subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+             body: "Build failed. Check: ${env.BUILD_URL}"
+    }
+}
+```
+
+### 6. Troubleshooting Email Issues
+
+#### Common Error Messages and Solutions:
+
+1. **"Connection error sending email"**
+   - Check SMTP server address and port
+   - Verify internet connectivity
+   - Check firewall settings
+
+2. **"Authentication failed"**
+   - Use App Password for Gmail (not regular password)
+   - Verify username and password
+   - Check if 2FA is enabled for Gmail
+
+3. **"Connection timeout"**
+   - Try different SMTP ports (587, 465, 25)
+   - Check if your network blocks SMTP traffic
+   - Try using a different SMTP server
+
+### 7. Current Configuration Issues
+
+Your current `jenkins-email-config.xml` has these problems:
+- `smtpUsername` is set to `your-email@gmail.com` (placeholder)
+- `smtpPassword` is set to `your-app-password` (placeholder)
+- You're trying to send to `rahulm@york.ie` but using Gmail SMTP
+
+### 8. Recommended Fix
+
+Since you're sending to `rahulm@york.ie`, you have two options:
+
+#### Option A: Use York.ie SMTP (if available)
+1. Contact your IT department for York.ie SMTP settings
+2. Update Jenkins with the correct SMTP server details
+
+#### Option B: Use Gmail SMTP with your Gmail account
+1. Update the SMTP username to your actual Gmail address
+2. Generate and use a Gmail App Password
+3. Keep sending to `rahulm@york.ie` (this will work)
+
+### 9. Quick Test
+
+To test if email is working after configuration:
+
+1. Update the email settings in Jenkins
+2. Test the configuration using the "Test configuration" button
+3. If test email works, run your Jenkins build
+4. Check if you receive the failure notification
+
+### 10. Manual Email Configuration Update
+
+If you need to manually update the configuration file, replace these lines in `jenkins-email-config.xml`:
+
+```xml
+<smtpUsername>your-actual-gmail@gmail.com</smtpUsername>
+<smtpPassword>your-actual-app-password</smtpPassword>
+```
+
+Remember to restart Jenkins after making configuration file changes.
 
 ## Prerequisites
 1. Jenkins server running

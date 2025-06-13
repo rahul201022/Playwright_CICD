@@ -4,8 +4,8 @@
   <defaultSuffix>@gmail.com</defaultSuffix>
   <smtpPort>587</smtpPort>
   <useSMTPAuth>true</useSMTPAuth>
-  <smtpUsername>your-email@gmail.com</smtpUsername>
-  <smtpPassword>your-app-password</smtpPassword>
+  <smtpUsername>rahulm@york.ie</smtpUsername>
+  <smtpPassword>lpya jgge imro csmf</smtpPassword>
   <useSsl>false</useSsl>
   <useTls>true</useTls>
   <charset>UTF-8</charset>
