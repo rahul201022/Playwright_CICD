@@ -32,25 +32,6 @@ import {expect, test} from "@playwright/test";
 
 test("Handling alerts", async({page}) => {
     await page.goto("https://www.lambdatest.com/selenium-playground/javascript-alert-box-demo");
-
-    //JavaScript Alert
-    // page.on("dialog",async(alert)=>{
-    //     const alertMsg = alert.message();
-    //     console.log(alertMsg);
-    //     alert.accept();
-    // })
-
-    // page.locator("//button[text()='Click Me']").nth(0).click();
-
-    // Confirm Box
-    // page.on("dialog",async(alert)=>{
-    //     const alertMsg = alert.message();
-    //     console.log(alertMsg);
-    //     alert.accept();
-    // })
-
-    // page.locator("//button[text()='Click Me']").nth(1).click();
-
     //prompt box
     page.on("dialog",async(alert)=>{
         const deValue = alert.defaultValue();
@@ -78,10 +59,7 @@ test("Hanling Dropdown", async({page}) => {
 
     await page.goto("https://www.lambdatest.com/selenium-playground/select-dropdown-demo");
      const ddl =  page.locator("#select-demo") 
-     ddl.selectOption("Monday")
-    // await page.selectOption("#select-demo",{
-    //     label:"Sunday"
-    // })
+     ddl.selectOption("Monday");
     await page.waitForTimeout(3000);
    await expect(ddl).toHaveValue("Monday");
 
