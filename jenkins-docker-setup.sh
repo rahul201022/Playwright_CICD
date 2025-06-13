@@ -2,7 +2,7 @@
 
 # Set up environment for Jenkins to use Docker with Colima
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
-export DOCKER_HOST="unix:///var/run/docker.sock"
+export DOCKER_HOST="unix:///Users/rahulm/.colima/default/docker.sock"
 
 echo "Setting up Docker environment for Jenkins..."
 echo "PATH: $PATH"
