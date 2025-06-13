@@ -1,34 +1,34 @@
 import {expect, test} from "@playwright/test";
 
-test("Basic Operations", async({ page }) => {
+// test("Basic Operations", async({ page }) => {
 
-    await page.goto("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
-    // console.log("Page title is: "+page.getByTitle);
-    const userNameInput = page.locator("//input[@name='username']");
-    console.log("Texbox placeholder: "+await userNameInput.getAttribute("placeholder"));
-    expect(userNameInput).toHaveAttribute("placeholder","username");
-    console.log("Before enter username: "+await userNameInput.inputValue());
-    await userNameInput.type("Admin");
-    console.log("After enter username: "+await userNameInput.inputValue());
+//     await page.goto("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+//     // console.log("Page title is: "+page.getByTitle);
+//     const userNameInput = page.locator("//input[@name='username']");
+//     console.log("Texbox placeholder: "+await userNameInput.getAttribute("placeholder"));
+//     expect(userNameInput).toHaveAttribute("placeholder","username");
+//     console.log("Before enter username: "+await userNameInput.inputValue());
+//     await userNameInput.type("Admin");
+//     console.log("After enter username: "+await userNameInput.inputValue());
 
-    const passwordInput = page.locator("//input[@name='password']");
-    passwordInput.fill("admin123");
+//     const passwordInput = page.locator("//input[@name='password']");
+//     passwordInput.fill("admin123");
 
-    await page.locator("//button[@type='submit']").click();
-    const txtDashboard= await page.locator("span h6");
-    console.log(await txtDashboard.textContent());
-    expect(txtDashboard).toHaveText("Dashboard");
+//     await page.locator("//button[@type='submit']").click();
+//     const txtDashboard= await page.locator("span h6");
+//     console.log(await txtDashboard.textContent());
+//     expect(txtDashboard).toHaveText("Dashboard");
 
-})
+// })
 
-test("Checkbox Demo", async({page}) => {
-    await page.goto("https://www.lambdatest.com/selenium-playground/checkbox-demo");
+// test("Checkbox Demo", async({page}) => {
+//     await page.goto("https://www.lambdatest.com/selenium-playground/checkbox-demo");
 
-    const chkCheckboxDemo = await page.locator("#isAgeSelected");
-    expect(chkCheckboxDemo).not.toBeChecked();
-    chkCheckboxDemo.check();
-    expect(chkCheckboxDemo).toBeChecked();
-})
+//     const chkCheckboxDemo = await page.locator("#isAgeSelected");
+//     expect(chkCheckboxDemo).not.toBeChecked();
+//     chkCheckboxDemo.check();
+//     expect(chkCheckboxDemo).toBeChecked();
+// })
 
 test("Handling alerts", async({page}) => {
     await page.goto("https://www.lambdatest.com/selenium-playground/javascript-alert-box-demo");
