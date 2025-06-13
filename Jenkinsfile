@@ -190,6 +190,7 @@ pipeline {
                 """,
                 to: 'rahulm@york.ie',
                 mimeType: 'text/html'
+                debug: true
             )
         }
         failure {
