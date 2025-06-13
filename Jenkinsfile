@@ -166,17 +166,17 @@ pipeline {
     }
     
     post {
-        always {
-            cleanWs()
-            script {
-                echo "Build completed with status: ${currentBuild.result}"
-                echo "Build URL: ${env.BUILD_URL}"
-                echo "Job Name: ${env.JOB_NAME}"
-                echo "Build Number: ${env.BUILD_NUMBER}"
-            }
-        }
+        // always {
+        //     cleanWs()
+        //     script {
+        //         echo "Build completed with status: ${currentBuild.result}"
+        //         echo "Build URL: ${env.BUILD_URL}"
+        //         echo "Job Name: ${env.JOB_NAME}"
+        //         echo "Build Number: ${env.BUILD_NUMBER}"
+        //     }
+        // }
         success {
-            echo 'Pipeline completed successfully!'
+            // echo 'Pipeline completed successfully!'
             emailext (
                 subject: "✅ Build Success: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}",
                 body: """
@@ -193,10 +193,10 @@ pipeline {
             )
         }
         failure {
-            echo 'Pipeline failed!'
-            script {
-                echo "Sending failure email notification..."
-            }
+            // echo 'Pipeline failed!'
+            // script {
+            //     echo "Sending failure email notification..."
+            // }
             emailext (
                 subject: "❌ Build Failed: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}",
                 body: """
