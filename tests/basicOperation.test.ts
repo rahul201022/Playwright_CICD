@@ -75,3 +75,24 @@ test("Hanling Dropdown", async({page}) => {
     }
    ])
 })
+
+test("Hanling Dropdown 1", async({page}) => {
+
+    await page.goto("https://www.lambdatest.com/selenium-playground/select-dropdown-demo");
+     const ddl =  page.locator("#select-demo") 
+     ddl.selectOption("Monday");
+    await page.waitForTimeout(3000);
+   await expect(ddl).toHaveValue("Monday");
+
+   const multi = page.selectOption("#multi-select",[
+    {
+        label: "Florida"
+    },
+    {
+        index:4
+    },
+    {
+        value:"Washington"
+    }
+   ])
+})
