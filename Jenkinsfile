@@ -189,8 +189,7 @@ pipeline {
                 <p><strong>Status:</strong> ✅ SUCCESS</p>
                 """,
                 to: 'rahulm@york.ie',
-                mimeType: 'text/html',
-                debug: true
+                mimeType: 'text/html'
             )
         }
         failure {
