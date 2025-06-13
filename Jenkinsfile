@@ -232,5 +232,11 @@ pipeline {
                 mimeType: 'text/html'
             )
         }
+        failure {
+    script {
+        echo "Tests failed - setting build status to FAILURE"
+        currentBuild.result = 'FAILURE'
+    }
+}
     }
 } 
