@@ -1,6 +1,11 @@
 pipeline {
     agent any
     
+    // Enable automatic builds on Git changes
+    triggers {
+        pollSCM('H/5 * * * *')  // Poll every 5 minutes as fallback
+    }
+    
     environment {
         DOCKER_IMAGE = 'playwright-tests'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
