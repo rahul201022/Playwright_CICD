@@ -161,7 +161,7 @@ pipeline {
                 <p><strong>Test Report:</strong> <a href="${env.BUILD_URL}HTML_Report/">HTML Test Report</a></p>
                 <p><strong>Status:</strong> ✅ SUCCESS</p>
                 """,
-                to: 'rahul201022@gmail.com',
+                to: 'rahulm@york.ie',
                 mimeType: 'text/html'
             )
         }
@@ -181,7 +181,7 @@ pipeline {
                 <p><strong>Status:</strong> ❌ FAILURE</p>
                 <p><strong>Please check the build log for details.</strong></p>
                 """,
-                to: 'rahul201022@gmail.com',
+                to: 'rahulm@york.ie',
                 mimeType: 'text/html'
             )
         }
@@ -201,7 +201,7 @@ pipeline {
                 <p><strong>Status:</strong> ⚠️ UNSTABLE</p>
                 <p><strong>Some tests may have failed. Please check the build log.</strong></p>
                 """,
-                to: 'rahul201022@gmail.com',
+                to: 'rahulm@york.ie',
                 mimeType: 'text/html'
             )
         }

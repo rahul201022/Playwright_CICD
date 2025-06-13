@@ -117,7 +117,7 @@ If the issue persists, try using the basic email plugin instead:
 ```groovy
 post {
     failure {
-        mail to: 'rahul201022@gmail.com',
+        mail to: 'rahulm@york.ie',
              subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
              body: "Build failed. Check: ${env.BUILD_URL}"
     }

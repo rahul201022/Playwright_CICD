@@ -49,13 +49,13 @@ If port 587 doesn't work, try:
 ## Step 3: Test Email Configuration
 
 1. In the **Extended E-mail Notification** section, click **Test configuration by sending test e-mail**
-2. Enter your email address: `rahul201022@gmail.com`
+2. Enter your email address: `rahulm@york.ie`
 3. Click **Test configuration**
 4. Check your email for the test message
 
 ## Step 4: Configure Default Recipients
 
-1. In the same section, set **Default Recipients** to: `rahul201022@gmail.com`
+1. In the same section, set **Default Recipients** to: `rahulm@york.ie`
 2. Set **Default Subject** to: `Build Status: $PROJECT_NAME - Build #$BUILD_NUMBER - $BUILD_STATUS`
 3. Set **Default Content** to:
 ```

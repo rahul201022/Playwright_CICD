@@ -35,7 +35,7 @@
   </securitySettings>
   <allowedDomains class="list"/>
   <excludedCommitters/>
-  <defaultRecipients>rahul201022@gmail.com</defaultRecipients>
+  <defaultRecipients>rahulm@york.ie</defaultRecipients>
   <enableAuditLog>false</enableAuditLog>
   <maxAttachmentSizeMb>0</maxAttachmentSizeMb>
   <defaultContent>Type: $BUILD_STATUS
@@ -69,7 +69,7 @@ Failed Tests: $FAILED_TESTS</defaultContent>
   </securitySettings>
   <allowedDomains class="list"/>
   <excludedCommitters/>
-  <defaultRecipients>rahul201022@gmail.com</defaultRecipients>
+  <defaultRecipients>rahulm@york.ie</defaultRecipients>
   <enableAuditLog>false</enableAuditLog>
   <maxAttachmentSizeMb>0</maxAttachmentSizeMb>
 </org.jenkinsci.plugins.emailext.ExtendedEmailPublisher_-DescriptorImpl> 
